@@ -1,0 +1,85 @@
+#Janice Lichtman's Solar System Wave 2
+
+class SolarSystem
+  attr_accessor :planets, :solar_system_age
+
+  def initialize
+    @planets=[]
+    @solar_system_age
+  end
+
+  #Adds a single planet to a solar system
+  def add_a_planet (planet)
+    @planets << planet
+  end
+
+  #Adds a list of planets to a solar system
+  def add_many_planets (planets) #here planets is an array
+    planets.each do |planet|
+      @planets << planet
+    end
+  end
+
+
+  #Gives a list of the local year of every planet in the solar system
+  def planet_ages
+    puts "The ages of the planets are:"
+    @planets.each do |planet|
+      puts "#{planet.name}: #{'%.2f' % planet.local_year(@solar_system_age)} years"
+    end
+  end
+end
+
+
+class Planet
+  attr_accessor :name, :mass, :number_of_moons, :length_of_day, :distance_from_sun, :mean_temperature, :solar_revolution_rate
+
+  def initialize (address_hash)
+    @name = address_hash[:name]
+    @mass = address_hash[:mass] # * 10**24 in kg
+    @number_of_moons = address_hash[:number_of_moons]
+    @length_of_day = address_hash[:length_of_day] #in hours
+    @distance_from_sun = address_hash[:distance_from_sun] # * 10**6 in km
+    @mean_temperature = address_hash[:mean_temperature] #in C
+    @solar_revolution_rate = address_hash[:solar_revolution_rate] #length of 1 of that planet's "years" measured in earth days
+  end
+
+  #Calculates the local year of a planet based on the age of that planet's solar system
+  def local_year(solar_system_age)
+    (solar_system_age) / @solar_revolution_rate
+  end
+
+end
+
+earth = Planet.new(name: "Earth", mass: 5.97, number_of_moons: 1, length_of_day: 24, distance_from_sun: 149.6, mean_temperature: 15, solar_revolution_rate: 365.26)
+mercury = Planet.new(name: "Mercury", mass: 0.330, number_of_moons: 0, length_of_day: 422.6, distance_from_sun: 57.9, mean_temperature: 167, solar_revolution_rate: 87.97)
+venus = Planet.new(name: "Venus", mass: 4.87, number_of_moons: 0, length_of_day: 2802.0, distance_from_sun: 108.2, mean_temperature: 464, solar_revolution_rate: 224.7)
+mars = Planet.new(name: "Mars", mass: 0.642, number_of_moons: 2, length_of_day: 24.7, distance_from_sun: 227.9, mean_temperature: -65, solar_revolution_rate: 686.98)
+jupiter = Planet.new(name: "Jupiter", mass: 1989, number_of_moons: 67, length_of_day: 9.9, distance_from_sun: 778.6, mean_temperature: -110, solar_revolution_rate: 4332.82)
+saturn = Planet.new(name: "Saturn", mass: 568, number_of_moons: 62, length_of_day: 10.7, distance_from_sun: 1433.5, mean_temperature: -140, solar_revolution_rate: 10755.7)
+uranus = Planet.new(name: "Uranus", mass: 86.8, number_of_moons: 27, length_of_day: 17.2, distance_from_sun: 2872.5, mean_temperature: -195, solar_revolution_rate: 30687.15)
+neptune = Planet.new(name: "Neptune", mass: 102, number_of_moons: 14, length_of_day: 16.1, distance_from_sun: 4495.1 , mean_temperature: -200, solar_revolution_rate: 60190.03)
+
+#Array of the planet objects. Inherently stored as ids.
+planets_to_add = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+
+
+our_solar_system = SolarSystem.new
+#Populatng the solar system!
+our_solar_system.add_many_planets(planets_to_add)
+
+our_solar_system.solar_system_age = 1.68 * 10**11
+
+
+#Determining the distance between two planets
+def distance_between_planets (planet1, planet2)
+  distance = (planet1.distance_from_sun.to_f - planet2.distance_from_sun.to_f).abs
+  puts "The distance between #{planet1.name} and #{planet2.name} is #{'%.2f' % distance} x 10^6km."
+  distance
+end
+
+#Demonstration of finding the distance between 2 planets
+distance_between_planets(mars,venus)
+
+#Demonstration of finding the ages of the planets in our_solar_system
+our_solar_system.planet_ages
