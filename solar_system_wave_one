@@ -1,0 +1,79 @@
+#Janice Lichtman's Solar System Wave 1
+
+#I'm submitting this as a separate file since the user interaction loops aren't relevant to the functionality of wave 2, and it seems easier for you to read this way.
+
+class Planet
+  attr_accessor :name, :mass, :number_of_moons, :length_of_day, :distance_from_sun, :mean_temperature, :solar_revolution_rate
+
+  def initialize (address_hash)
+    @name = address_hash[:name]
+    @mass = address_hash[:mass] # * 10**24 in kg
+    @number_of_moons = address_hash[:number_of_moons]
+    @length_of_day = address_hash[:length_of_day] #in hours
+    @distance_from_sun = address_hash[:distance_from_sun] # * 10**6 in km
+    @mean_temperature = address_hash[:mean_temperature] #in C
+    @solar_revolution_rate = address_hash[:solar_revolution_rate] #length of 1 of that planet's "years" measured in earth days
+  end
+end
+
+
+earth = Planet.new(name: "Earth", mass: 5.97, number_of_moons: 1, length_of_day: 24, distance_from_sun: 149.6, mean_temperature: 15, solar_revolution_rate: 365.26)
+mercury = Planet.new(name: "Mercury", mass: 0.330, number_of_moons: 0, length_of_day: 422.6, distance_from_sun: 57.9, mean_temperature: 167, solar_revolution_rate: 87.97)
+venus = Planet.new(name: "Venus", mass: 4.87, number_of_moons: 0, length_of_day: 2802.0, distance_from_sun: 108.2, mean_temperature: 464, solar_revolution_rate: 224.7)
+mars = Planet.new(name: "Mars", mass: 0.642, number_of_moons: 2, length_of_day: 24.7, distance_from_sun: 227.9, mean_temperature: -65, solar_revolution_rate: 686.98)
+jupiter = Planet.new(name: "Jupiter", mass: 1989, number_of_moons: 67, length_of_day: 9.9, distance_from_sun: 778.6, mean_temperature: -110, solar_revolution_rate: 4332.82)
+saturn = Planet.new(name: "Saturn", mass: 568, number_of_moons: 62, length_of_day: 10.7, distance_from_sun: 1433.5, mean_temperature: -140, solar_revolution_rate: 10755.7)
+uranus = Planet.new(name: "Uranus", mass: 86.8, number_of_moons: 27, length_of_day: 17.2, distance_from_sun: 2872.5, mean_temperature: -195, solar_revolution_rate: 30687.15)
+neptune = Planet.new(name: "Neptune", mass: 102, number_of_moons: 14, length_of_day: 16.1, distance_from_sun: 4495.1 , mean_temperature: -200, solar_revolution_rate: 60190.03)
+
+#Array of the planet objects. Inherently stored as ids.
+planets = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+
+planet_names =[]
+
+#Creating an array of the planet names
+planets.each do |planet|
+  planet_names << planet.name
+end
+
+#Loop to continue offering planet information to the user.
+keep_going = true
+while keep_going
+
+  puts "What planet would you like to learn about?\nYour options are:"
+  planet_names.each do |name|
+    print "#{name} "
+  end
+  puts ""
+
+  chosen_planet = gets.chomp.capitalize
+
+  until planet_names.include? (chosen_planet)
+    puts "Silly goose, that's not a planet! Try again:"
+    chosen_planet = gets.chomp.capitalize
+  end
+
+  puts "Great choice! Here's some information about the planet #{chosen_planet}:"
+  puts "Mass: #{planets[planet_names.index(chosen_planet)].mass} x 10^24 kg"
+  puts "Number of moons: #{planets[planet_names.index(chosen_planet)].number_of_moons}"
+  puts "Length of a day: #{planets[planet_names.index(chosen_planet)].length_of_day} hours"
+  puts "Distance from the sun: #{planets[planet_names.index(chosen_planet)].distance_from_sun} x 10^6 km"
+  puts "Mean temperature: #{planets[planet_names.index(chosen_planet)].mean_temperature} degrees Celcius"
+  puts "Length of 1 year (in earth days): #{planets[planet_names.index(chosen_planet)].solar_revolution_rate} days"
+  puts
+
+
+  puts "Would you like to learn about another planet? (yes or no)"
+
+  more = gets.chomp.downcase
+  until (more =="yes" || more == "no")
+    puts "Please answer yes or no.\nWould you like to learn about another planet?"
+    more = gets.chomp.downcase
+  end
+
+  if more == "yes"
+    keep_going = true
+  else
+    keep_going = false
+  end
+end
